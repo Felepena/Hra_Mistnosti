@@ -1,0 +1,470 @@
+import java.util.*;
+
+
+public class Main {
+
+    public static int lvl = 0;
+
+
+    public static void main(String[] args) {
+
+        Random rand = new Random();
+        Scanner scanner = new Scanner(System.in);
+
+        boolean hasKey;
+        int points;
+        int currentRoom;
+        int exitRoom;
+        int level;
+
+        int spoints = 0;
+        int scurrentRoom = 0;
+        int slevel = 0;
+        int slvl = 0;
+        int lives;
+        int money;
+
+        Boolean[] slightOn = new Boolean[0];
+
+
+        Boolean[] lightOn = new Boolean[5];
+        Arrays.fill(lightOn, false);
+        hasKey = false;
+
+
+        Boolean[] search = new Boolean[5];
+        Arrays.fill(search, false);
+        hasKey = false;
+
+
+        points = 10;
+        currentRoom = 1;
+        level = 0;
+
+        lives = 2;
+
+
+        ArrayList<String> inventory = new ArrayList<>();
+        inventory.add("picklock");
+        inventory.add("picklock");
+        inventory.add("picklock");
+
+        int keyRoom = rand.nextInt(3, 5);
+        int secondkey = rand.nextInt(1) + 2;
+
+
+        while (points > 0) {
+            System.out.println("You are in room " + currentRoom + ".");
+            System.out.println("You have " + points + " points left");
+            System.out.println("You have " + lvl + " levels");
+            System.out.println("What do you want to do? (light on/search/move/exit/show map/show inv/open chest/save/show save/load)");
+            String action = scanner.nextLine();
+
+
+            switch (action) {
+
+                case "shop":
+
+                    System.out.print("hello wellcome to my shop  \n" + "what would you like to buy ? \n" + "This is what you can buy\n Points\n A random useless book\n levels\n ");
+                    System.out.println("what would you like to buy? (points,book,levels)");
+                    System.out.println("if you wanna cheack how mutch money you have type !money");
+                    String shopopinion = scanner.nextLine();
+                    switch (shopopinion) {
+
+                        case "Points":
+
+
+                            break;
+
+
+                    }
+
+
+                    break;
+
+                case "save":
+                    spoints = points;
+                    scurrentRoom = currentRoom;
+                    slevel = level;
+                    slvl = lvl;
+                    slightOn = lightOn;
+
+                    break;
+
+                case "show save":
+                    if (spoints == 0) {
+                        System.out.println("you have to save your game firts");
+                    } else {
+                        System.out.println("you have " + spoints + " lives");
+                        System.out.println("you are in room " + scurrentRoom);
+                        System.out.println(slevel);
+                        System.out.println(slvl);
+                        System.out.println(slightOn);
+                    }
+                    break;
+
+                case "load":
+                    points = spoints;
+                    currentRoom = scurrentRoom;
+                    slevel = level;
+                    lvl = slvl;
+                    lightOn = slightOn;
+                    break;
+
+
+                case "show inv":
+                    System.out.println(inventory);
+                    break;
+
+
+                case "show map":
+                    String[][] mapa = new String[12][16];
+                    for (int i = 0; i < 12; i++) {
+                        for (int j = 0; j < 16; j++) {
+                            if (i == 0 || i == 11 || j == 0 || j == 15 || i == 0 || j == 5 || j == 12) {
+                                mapa[i][j] = "⬛";
+                            } else {
+                                mapa[i][j] = "⬜";
+                            }
+                        }
+                    }
+
+                    mapa[1][2] = "\uD83D\uDFEB";
+                    mapa[1][3] = "\uD83D\uDFEB";
+
+                    mapa[4][6] = "⬛";
+                    mapa[4][7] = "⬛";
+                    mapa[4][8] = "⬛";
+                    mapa[4][9] = "⬛";
+                    mapa[4][10] = "⬛";
+                    mapa[4][11] = "⬛";
+
+                    mapa[7][6] = "⬛";
+                    mapa[7][7] = "⬛";
+                    mapa[7][8] = "⬛";
+                    mapa[7][9] = "⬛";
+                    mapa[7][10] = "⬛";
+                    mapa[7][11] = "⬛";
+
+
+                    for (int i = 0; i < 12; i++) {
+                        for (int j = 0; j < 16; j++) {
+                            System.out.print(mapa[i][j]);
+                        }
+                        System.out.println();
+                    }
+                    break;
+
+                case "light on":
+                    if (!lightOn[currentRoom - 1]) {
+                        lightOn[currentRoom - 1] = true;
+                        System.out.println("you turned the light on");
+                    } else {
+                        System.out.println("the light is allredy on");
+                    }
+
+
+                    break;
+                case "search":
+
+
+                    if (lightOn[currentRoom - 1] && search[currentRoom - 1] == false && currentRoom == keyRoom) {
+                        System.out.println("you found a chest do you want to open it ? (yes)");
+                        int random = rand.nextInt(3, 5);
+                        System.out.println("and you got ");
+                        String option = scanner.nextLine();
+                        switch (option) {
+                            case "yes":
+                                if (search[currentRoom - 1] == true) {
+                                    System.out.println("you allredy searched here");
+
+                                } else {
+                                    search[currentRoom - 1] = true;
+                                    if (inventory.contains("picklock") && lightOn[currentRoom - 1] == true) {
+
+
+                                        if (lvl == 1) {
+                                            int num = rand.nextInt(10) + 1;
+                                            if (num <= 5) {
+                                                System.out.println("Oh yes you made it");
+                                                inventory.remove("picklock");
+                                                int keyornumber = rand.nextInt(1) + 2;
+                                                if (keyornumber == 1) {
+
+                                                } else {
+                                                    inventory.add("key1");
+                                                }
+                                                System.out.println(inventory);
+                                            } else {
+                                                System.out.println("Oh no you didnt hit the chance");
+                                                inventory.remove("picklock");
+                                            }
+                                        }
+                                        if (lvl == 2) {
+                                            int num = rand.nextInt(10) + 1;
+                                            if (num <= 4) {
+                                                System.out.println("Oh yes you made it");
+                                                inventory.remove("picklock");
+                                                inventory.add("key1");
+                                                System.out.println(inventory);
+                                            } else {
+                                                System.out.println("Oh no you didnt hit the chance");
+                                                inventory.remove("picklock");
+                                            }
+                                        }
+                                        if (lvl == 3) {
+                                            int num = rand.nextInt(10) + 1;
+                                            if (num <= 3) {
+                                                System.out.println("Oh yes you made it");
+                                                inventory.remove("picklock");
+                                                inventory.add("key1");
+                                                System.out.println(inventory);
+                                            } else {
+                                                System.out.println("Oh no you didnt hit the chance");
+                                                inventory.remove("picklock");
+                                            }
+                                        }
+                                        if (lvl == 4) {
+                                            int num = rand.nextInt(10) + 1;
+                                            if (num <= 2) {
+                                                System.out.println("Oh yes you made it");
+                                                inventory.remove("picklock");
+                                                inventory.add("key1");
+                                                System.out.println(inventory);
+                                            } else {
+                                                System.out.println("Oh no you didnt hit the chance");
+                                                inventory.remove("picklock");
+                                            }
+                                        }
+                                        if (lvl == 5) {
+                                            int num = rand.nextInt(10) + 1;
+                                            if (num <= 1) {
+                                                System.out.println("Oh yes you made it");
+                                                inventory.remove("picklock");
+                                                inventory.add("key1");
+                                                System.out.println(inventory);
+                                            } else {
+                                                System.out.println("Oh no you didnt hit the chance");
+                                                inventory.remove("picklock");
+                                            }
+                                        }
+                                    } else if (inventory.contains("picklock") && lightOn[currentRoom - 1] == false) {
+                                        System.out.println("you need to turn the light on");
+                                    }
+                                }
+                            case "no":
+                                System.out.println("okay you can continune");
+                        }
+                    }
+                    if (lightOn[currentRoom - 1] == true && currentRoom == secondkey) {
+                        System.out.println("you found a chest do you want to open it ? (yes)");
+                        String option2 = scanner.nextLine();
+                        switch (option2) {
+                            case "yes":
+                                if (inventory.contains("picklock") && lightOn[currentRoom - 1] == true) {
+
+                                    if (lvl == 1) {
+                                        int num = rand.nextInt(10) + 1;
+                                        if (num <= 5) {
+                                            System.out.println("Oh yes you made it");
+                                            inventory.remove("picklock");
+                                            inventory.add("key1");
+                                            System.out.println(inventory);
+                                        } else {
+                                            System.out.println("Oh no you didnt hit the chance");
+                                            inventory.remove("picklock");
+                                        }
+                                    }
+                                    if (lvl == 2) {
+                                        int num = rand.nextInt(10) + 1;
+                                        if (num <= 4) {
+                                            System.out.println("Oh yes you made it");
+                                            inventory.remove("picklock");
+                                            inventory.add("key1");
+                                            System.out.println(inventory);
+                                        } else {
+                                            System.out.println("Oh no you didnt hit the chance");
+                                            inventory.remove("picklock");
+                                        }
+                                    }
+                                    if (lvl == 3) {
+                                        int num = rand.nextInt(10) + 1;
+                                        if (num <= 3) {
+                                            System.out.println("Oh yes you made it");
+                                            inventory.remove("picklock");
+                                            inventory.add("key1");
+                                            System.out.println(inventory);
+                                        } else {
+                                            System.out.println("Oh no you didnt hit the chance");
+                                            inventory.remove("picklock");
+                                        }
+                                    }
+                                    if (lvl == 4) {
+                                        int num = rand.nextInt(10) + 1;
+                                        if (num <= 2) {
+                                            System.out.println("Oh yes you made it");
+                                            inventory.remove("picklock");
+                                            inventory.add("key1");
+                                            System.out.println(inventory);
+                                        } else {
+                                            System.out.println("Oh no you didnt hit the chance");
+                                            inventory.remove("picklock");
+                                        }
+                                    }
+                                    if (lvl == 5) {
+                                        int num = rand.nextInt(10) + 1;
+                                        if (num <= 1) {
+                                            System.out.println("Oh yes you made it");
+                                            inventory.remove("picklock");
+                                            inventory.add("key1");
+                                            System.out.println(inventory);
+                                        } else {
+                                            System.out.println("Oh no you didnt hit the chance");
+                                            inventory.remove("picklock");
+                                        }
+                                    }
+
+                                    break;
+                                } else if (inventory.contains("picklock") && lightOn[currentRoom - 1] == false) {
+                                    System.out.println("you need to turn the light on");
+                                }
+                            case "no":
+                                System.out.println("okay you can continune");
+                                break;
+                        }
+
+                    } else if (lightOn[currentRoom - 1] == false) {
+                        System.out.println("the light is off !");
+                    } else {
+                        System.out.println("L bozo nothing here");
+                    }
+
+
+                    break;
+                case "move":
+
+                    switch (currentRoom) {
+
+                        case 1:
+
+                            System.out.println("you can go to room number 2");
+                            System.out.println("or if you have all keys you can exit");
+                            int newRoom = scanner.nextInt();
+                            scanner.nextLine();
+
+
+                            switch (newRoom) {
+                                case 2:
+
+                                    currentRoom = newRoom;
+                                    points--;
+                                    methoda1();
+
+
+                                    break;
+                                default:
+                                    System.out.println("something went wrong");
+
+                            }
+                            break;
+
+                        case 2:
+
+                            System.out.println("you can go to room number 1, 3 and 4");
+                            newRoom = scanner.nextInt();
+                            scanner.nextLine();
+
+                            switch (newRoom) {
+                                case 1:
+                                case 3:
+
+                                case 4:
+                                    currentRoom = newRoom;
+                                    points--;
+                                    methoda1();
+                                    break;
+
+                                default:
+                                    System.out.println("something went wrong");
+
+                            }
+                            break;
+
+
+                        case 4, 3:
+                            System.out.println("you can go to room number 2, 5");
+                            newRoom = scanner.nextInt();
+                            scanner.nextLine();
+
+                            switch (newRoom) {
+                                case 2:
+                                case 5:
+                                    currentRoom = newRoom;
+                                    methoda1();
+                                    points--;
+                                    break;
+
+                                default:
+                                    System.out.println("something went wrong");
+
+                            }
+                            break;
+
+                        case 5:
+                            System.out.println("you can go to room number 3, 4");
+                            newRoom = scanner.nextInt();
+                            scanner.nextLine();
+
+                            switch (newRoom) {
+
+                                case 3:
+                                case 4:
+
+                                    currentRoom = newRoom;
+                                    methoda1();
+                                    points--;
+                                    break;
+
+                                default:
+                                    System.out.println("something went wrong");
+
+                            }
+                            break;
+
+
+                        default:
+                            System.out.println("Invalid action.");
+
+                    }
+
+                    break;
+                case "exit":
+                    if (currentRoom == 1 && inventory.contains("key1") && inventory.contains("key2")) {
+                        System.out.println("you won good job");
+                        return;
+                    } else if (currentRoom != 1) {
+                        System.out.println("you have to go to the door its in room number one");
+                    } else {
+                        System.out.println("you do not have enough keys");
+                    }
+
+                    break;
+                default:
+                    System.out.println("Invalid action");
+                    break;
+            }
+
+
+        }
+    }
+
+    public static void methoda1() {
+
+        if (lvl == 5) {
+            System.out.println("You have reached the maximum level.");
+        } else {
+            lvl++;
+            System.out.println("Your level has been increased to level" + lvl + ".");
+        }
+    }
+}
